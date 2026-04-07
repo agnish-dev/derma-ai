@@ -1,0 +1,49 @@
+{
+  "header": {
+    "title": "DERMA GUIDE"
+  },
+  "hero": {
+    "title": "Real-time AI Analysis",
+    "subtitle": "Scan your skin condition for instant triage."
+  },
+  "camera": {
+    "scanning": "Scanning",
+    "retake": "Retake",
+    "confirm": "Confirm Image"
+  },
+  "survey": {
+    "title": "Clinical Survey",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit Analysis",
+    "duration": {
+      "question": "How long have you had this condition?",
+      "options": ["Just started", "Few days", "Weeks", "Months"]
+    },
+    "pain": {
+      "question": "Are you experiencing any pain?",
+      "options": ["None", "Mild", "Moderate", "Severe"]
+    },
+    "spreading": {
+      "question": "Is the condition spreading?",
+      "options": ["No", "Yes, slowly", "Yes, rapidly"]
+    },
+    "history": {
+      "question": "Have you had this before?",
+      "options": ["No", "Yes"]
+    },
+    "fever": {
+      "question": "Do you have a fever?",
+      "options": ["No", "Yes"]
+    }
+  },
+  "results": {
+    "title": "Results",
+    "routine": "Routine",
+    "seeDoctor": "See Doctor",
+    "seekCareToday": "Seek Care Today",
+    "predicted": "Predicted skin condition",
+    "download": "Download Report",
+    "startOver": "Start Over"
+  }
+}

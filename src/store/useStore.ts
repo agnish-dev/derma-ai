@@ -1,0 +1,137 @@
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+export type TriageStatus = 'Routine' | 'See Doctor' | 'Seek Care Today' | null;
+
+export interface SurveyData {
+  duration: string;
+  pain: string;
+  spreading: string;
+  history: string;
+  fever: string;
+}
+
+export type ViewState = 'dashboard' | 'analysis' | 'profile' | 'history';
+
+export interface User {
+  name: string;
+  email: string;
+  patientId: string;
+}
+
+export interface MedicalRecord {
+  id: string;
+  date: string;
+  patientId: string;
+  patientName: string;
+  conditionName: string;
+  urgency: TriageStatus;
+  surveyData: SurveyData;
+}
+
+export interface AppState {
+  // Navigation & Auth
+  currentView: ViewState;
+  user: User | null;
+  historyLogs: MedicalRecord[];
+  isSidebarOpen: boolean;
+  setCurrentView: (view: ViewState) => void;
+  loginUser: (name: string, email: string) => void;
+  logoutUser: () => void;
+  toggleSidebar: () => void;
+
+  // Analysis State
+  currentStep: number;
+  capturedImage: string | null;
+  surveyData: SurveyData;
+  triageResult: TriageStatus;
+  conditionName: string | null;
+  isProcessing: boolean;
+  
+  // Actions
+  setStep: (step: number) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  setCapturedImage: (image: string | null) => void;
+  updateSurvey: (data: Partial<SurveyData>) => void;
+  setTriageResult: (status: TriageStatus, conditionName?: string) => void;
+  setIsProcessing: (isProcessing: boolean) => void;
+  resetFlow: () => void;
+}
+
+const initialSurveyData = {
+  duration: '',
+  pain: '',
+  spreading: '',
+  history: '',
+  fever: ''
+};
+
+export const useStore = create<AppState>()(
+  persist(
+    (set) => ({
+      // Navigation & Auth Initial State
+      currentView: 'dashboard',
+      user: null,
+      historyLogs: [],
+      isSidebarOpen: true,
+      setCurrentView: (view) => set({ currentView: view }),
+      loginUser: (name, email) => set({ 
+        user: { name, email, patientId: `PT-${Math.floor(Math.random() * 900000) + 100000}` } 
+      }),
+      logoutUser: () => set({ user: null }),
+      toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+
+      // Analysis Initial State
+      currentStep: 0,
+      capturedImage: null,
+      surveyData: initialSurveyData,
+      triageResult: null,
+      conditionName: null,
+      isProcessing: false,
+
+      // Analysis Actions
+      setStep: (step) => set({ currentStep: step }),
+      nextStep: () => set((state) => ({ currentStep: state.currentStep + 1 })),
+      prevStep: () => set((state) => ({ currentStep: Math.max(0, state.currentStep - 1) })),
+      setCapturedImage: (image) => set({ capturedImage: image }),
+      updateSurvey: (data) => set((state) => ({ surveyData: { ...state.surveyData, ...data } })),
+      setTriageResult: (status, conditionName) => set((state) => {
+        let newLogs = state.historyLogs;
+        
+        // Log to history if valid condition is generated
+        if (status && conditionName) {
+            const newRecord: MedicalRecord = {
+               id: `REC-${Math.random().toString(36).substr(2, 9)}`,
+               date: new Date().toISOString(),
+               patientId: state.user ? state.user.patientId : 'Anonymous',
+               patientName: state.user ? state.user.name : 'Guest User',
+               conditionName: conditionName,
+               urgency: status,
+               surveyData: state.surveyData
+            };
+            newLogs = [newRecord, ...state.historyLogs];
+        }
+
+        return { 
+          triageResult: status, 
+          historyLogs: newLogs,
+          ...(conditionName ? { conditionName } : {}) 
+        };
+      }),
+      setIsProcessing: (isProcessing) => set({ isProcessing }),
+      resetFlow: () => set({
+        currentStep: 0,
+        capturedImage: null,
+        surveyData: initialSurveyData,
+        triageResult: null,
+        conditionName: null,
+        isProcessing: false
+      })
+    }),
+    {
+      name: 'derma-guide-storage', // unique name for localStorage key
+      partialize: (state) => ({ user: state.user, historyLogs: state.historyLogs }), // persist user and logs
+    }
+  )
+);

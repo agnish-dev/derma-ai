@@ -1,0 +1,11 @@
+node_modules/
+.next/
+backend/venv/
+backend/archive/
+backend/model.h5
+*.h5
+*.tflite
+node_modules
+__pycache__/
+.env
+.DS_Store

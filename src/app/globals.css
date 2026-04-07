@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-trust-blue: #2056b3;
+  --color-success-green: #28a745;
+  --color-warning-yellow: #ffc107;
+  --color-urgency-red: #dc3545;
+  --color-clinical-white: #f8f9fa;
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --font-montserrat: var(--font-montserrat);
+  --font-sans: var(--font-open-sans);
+}
+
+:root {
+  --background: #f8f9fa;
+  --foreground: #171717;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer utilities {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .stars-bg {
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: moveStars 60s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .dark .stars-bg {
+    opacity: 0.15;
+  }
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0; }
+  to { background-position: 1000px -1000px; }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat);
+}
