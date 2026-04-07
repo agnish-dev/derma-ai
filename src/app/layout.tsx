@@ -12,7 +12,7 @@ const openSans = Open_Sans({
   subsets: ["latin"],
 });
 
-import { Providers } from "@/components/Providers";
+import { Providers } from "@/components/ui/Providers";
 
 
 export const metadata: Metadata = {

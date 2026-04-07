@@ -1,13 +1,13 @@
 'use client';
 
-import { Sidebar } from '@/components/Sidebar';
-import { DashboardHeader } from '@/components/DashboardHeader';
-import { DashboardHome } from '@/components/DashboardHome';
-import { ProfileView } from '@/components/ProfileView';
-import { MedicalHistoryView } from '@/components/MedicalHistoryView';
-import { CameraView } from '@/components/CameraView';
-import { SurveyWizard } from '@/components/SurveyWizard';
-import { TriageDashboard } from '@/components/TriageDashboard';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { DashboardHome } from '@/components/features/DashboardHome';
+import { ProfileView } from '@/components/features/ProfileView';
+import { MedicalHistoryView } from '@/components/features/MedicalHistoryView';
+import { CameraView } from '@/components/features/CameraView';
+import { SurveyWizard } from '@/components/features/SurveyWizard';
+import { TriageDashboard } from '@/components/features/TriageDashboard';
 import { useStore } from '@/store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 

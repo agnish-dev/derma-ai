@@ -1,11 +1,39 @@
+# === Dependencies ===
 node_modules/
+
+# === Next.js Build ===
 .next/
+out/
+
+# === Python ===
 backend/venv/
-backend/archive/
-backend/model.h5
+backend/__pycache__/
+__pycache__/
+*.pyc
+
+# === ML Model Artifacts (too large for Git) ===
 *.h5
 *.tflite
-node_modules
-__pycache__/
+*.pb
+*.onnx
+
+# === Training Data ===
+archive/
+
+# === Environment Variables ===
 .env
+.env.local
+.env.production
+
+# === OS Files ===
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE ===
+.vscode/
+.idea/
+
+# === Misc ===
+*.log
+npm-debug.log*
