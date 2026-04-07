@@ -63,6 +63,11 @@
   to { background-position: 1000px -1000px; }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-200%); }
+  100% { transform: translateX(200%); }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

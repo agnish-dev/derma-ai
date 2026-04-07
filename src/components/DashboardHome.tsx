@@ -27,24 +27,51 @@ export function DashboardHome() {
       <motion.div 
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="w-full glass-card p-10 flex flex-col items-center justify-center bg-white/80 dark:bg-slate-800/80 dark:border-slate-700 transition-colors duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]"
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="relative w-full glass-card overflow-hidden p-12 flex flex-col items-center justify-center bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl border border-white/40 dark:border-slate-700/50 transition-all duration-500 shadow-xl dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
       >
-        <div className="w-20 h-20 bg-blue-50 dark:bg-trust-blue/20 rounded-full flex items-center justify-center mb-6 shadow-sm border border-blue-100 dark:border-trust-blue/30">
-          <Activity size={36} className="text-trust-blue dark:text-blue-400" />
+        {/* Dynamic mesh background for a premium feel */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3] 
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[-20%] left-[-10%] w-[60%] h-[120%] rounded-full bg-blue-400/20 dark:bg-blue-600/20 blur-[80px]"
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.4, 0.2] 
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[120%] rounded-full bg-indigo-400/20 dark:bg-purple-600/20 blur-[80px]"
+          />
+        </div>
+
+        <div className="relative z-10 w-24 h-24 bg-gradient-to-tr from-blue-100 to-indigo-50 dark:from-blue-900/40 dark:to-indigo-800/40 rounded-full flex items-center justify-center mb-6 shadow-inner ring-1 ring-white/50 dark:ring-white/10">
+          <Activity size={40} className="text-blue-600 dark:text-blue-400 drop-shadow-md" />
         </div>
         
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4 tracking-tight">Symptom Consultation Dashboard</h2>
-        <p className="text-center text-gray-500 dark:text-slate-300 max-w-lg mb-10 leading-relaxed">
+        <h2 className="relative z-10 text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-slate-300 mb-4 tracking-tight text-center">
+          Symptom Consultation Dashboard
+        </h2>
+        <p className="relative z-10 text-center text-gray-600 dark:text-slate-300 max-w-xl mb-12 text-lg font-medium leading-relaxed">
           Welcome to your interactive medical dashboard. Click below to begin a new reactive symptom consultation and receive an instant AI skin analysis triage.
         </p>
         
-        <button 
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setCurrentView('analysis')}
-          className="px-8 py-4 bg-trust-blue hover:opacity-90 text-white font-bold rounded-full flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-blue-500/30 text-lg"
+          className="relative z-10 overflow-hidden group px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-full flex items-center justify-center gap-3 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.8)] transition-all text-lg border border-blue-400/30"
         >
-          <Sparkles size={24} />
-          Start New AI Analysis
-        </button>
+          {/* Shimmer effect strip */}
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
+          <Sparkles size={24} className="relative z-10 drop-shadow-md animate-pulse" />
+          <span className="relative z-10 drop-shadow-sm">Start New AI Analysis</span>
+        </motion.button>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-2">
