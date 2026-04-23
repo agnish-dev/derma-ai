@@ -17,6 +17,19 @@ export default function Home() {
 
   return (
     <div className="h-screen w-full flex overflow-hidden bg-gradient-to-b from-blue-50/50 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 transition-colors duration-500">
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => useStore.getState().toggleSidebar()}
+          />
+        )}
+      </AnimatePresence>
+
       <AnimatePresence initial={false}>
         {isSidebarOpen && (
           <motion.div
@@ -24,7 +37,7 @@ export default function Home() {
             animate={{ width: 256, x: 0 }}
             exit={{ width: 0, x: -256 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="flex-shrink-0 h-full overflow-hidden border-r dark:border-slate-800 print:hidden"
+            className="absolute md:relative z-50 md:z-10 bg-white dark:bg-slate-950 flex-shrink-0 h-full overflow-hidden border-r dark:border-slate-800 print:hidden shadow-2xl md:shadow-none"
           >
             <div className="w-64 h-full">
                <Sidebar />
@@ -46,7 +59,7 @@ export default function Home() {
             <DashboardHeader />
          </div>
          
-         <main className="flex-1 p-6 relative print:p-0 print:bg-white">
+         <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 relative print:p-0 print:bg-white overflow-x-hidden">
             <AnimatePresence mode="wait">
               {currentView === 'analysis' ? (
                 <motion.div

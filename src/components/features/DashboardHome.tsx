@@ -28,7 +28,7 @@ export function DashboardHome() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative w-full glass-card overflow-hidden p-12 flex flex-col items-center justify-center bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl border border-white/40 dark:border-slate-700/50 transition-all duration-500 shadow-xl dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
+        className="relative w-full glass-card overflow-hidden p-6 md:p-12 flex flex-col items-center justify-center bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl border border-white/40 dark:border-slate-700/50 transition-all duration-500 shadow-xl dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
       >
         {/* Dynamic mesh background for a premium feel */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl z-0">
@@ -54,7 +54,7 @@ export function DashboardHome() {
           <Activity size={40} className="text-blue-600 dark:text-blue-400 drop-shadow-md" />
         </div>
         
-        <h2 className="relative z-10 text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-slate-300 mb-4 tracking-tight text-center">
+        <h2 className="relative z-10 text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-slate-300 mb-4 tracking-tight text-center leading-tight">
           Symptom Consultation Dashboard
         </h2>
         <p className="relative z-10 text-center text-gray-600 dark:text-slate-300 max-w-xl mb-12 text-lg font-medium leading-relaxed">
@@ -65,7 +65,7 @@ export function DashboardHome() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setCurrentView('analysis')}
-          className="relative z-10 overflow-hidden group px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-full flex items-center justify-center gap-3 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.8)] transition-all text-lg border border-blue-400/30"
+          className="relative z-10 overflow-hidden group px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-full flex items-center justify-center gap-3 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_0_60px_-15px_rgba(37,99,235,0.8)] transition-all text-base md:text-lg border border-blue-400/30"
         >
           {/* Shimmer effect strip */}
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />

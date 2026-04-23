@@ -3,7 +3,7 @@
 import { useRef, useCallback, useState } from 'react';
 import Webcam from 'react-webcam';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, RefreshCw, CheckCircle2, Upload, Video } from 'lucide-react';
+import { Camera, RefreshCw, CheckCircle2, Upload, Video, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from '@/store/useStore';
 
@@ -59,13 +59,21 @@ export function CameraView() {
         {!localImage ? (
           <>
             {isCameraEnabled ? (
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                videoConstraints={{ facingMode: "environment" }}
-                className="w-full h-full object-cover"
-              />
+              <>
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={{ facingMode: "environment" }}
+                  className="w-full h-full object-cover"
+                />
+                <button 
+                  onClick={() => setIsCameraEnabled(false)}
+                  className="absolute top-4 left-4 w-10 h-10 bg-black/50 hover:bg-black/70 flex items-center justify-center rounded-full text-white backdrop-blur-md transition-colors z-30 shadow-[0_4px_12px_rgba(0,0,0,0.5)] active:scale-95"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              </>
             ) : (
                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 dark:bg-slate-900 absolute inset-0 gap-4 transition-colors">
                   <Camera size={48} className="text-gray-300 dark:text-slate-700" />
