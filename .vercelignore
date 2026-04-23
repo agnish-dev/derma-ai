@@ -1,0 +1,12 @@
+# Ignore python backend because TensorFlow exceeds Vercel Serverless 250MB limit. 
+# It must be deployed to Render, Railway, or AWS.
+backend/
+
+# Ignore dataset to prevent massive upload timeouts during Vercel builds
+archive/
+
+# Ignore other non-frontend files
+start.bat
+AGENTS.md
+implementation_plan.md
+walkthrough.md
