@@ -1,4 +1,4 @@
-# Derma-Guide AI 🩺✨
+# Derma-Guide AI 🩺
 
 Derma-Guide AI is an interactive, AI-powered progressive web application (PWA) designed to provide early, non-diagnostic skin condition triage and guidance. By combining edge-ready machine learning with rapid symptom surveying, Derma-Guide offers users instant feedback, urgency scoring, and next-step recommendations for dermatological concerns.
 
