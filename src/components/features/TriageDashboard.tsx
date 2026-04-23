@@ -64,7 +64,7 @@ export function TriageDashboard() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className="flex gap-4"
+        className="flex gap-4 print:hidden"
       >
         <button 
           onClick={() => window.print()}

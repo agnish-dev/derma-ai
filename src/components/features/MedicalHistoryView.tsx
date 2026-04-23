@@ -1,5 +1,5 @@
 import { useStore } from '@/store/useStore';
-import { History, Calendar, AlertTriangle, Clock, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { History, Calendar, AlertTriangle, Clock, CheckCircle, ChevronDown, ChevronUp, FileDown } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 export function MedicalHistoryView() {
@@ -23,7 +23,7 @@ export function MedicalHistoryView() {
 
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 px-4 flex flex-col">
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-3 mb-8 print:hidden">
         <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl shadow-sm flex items-center justify-center text-trust-blue border border-gray-100 dark:border-slate-700 transition-colors duration-300">
           <History size={24} />
         </div>
@@ -54,7 +54,7 @@ export function MedicalHistoryView() {
               <div 
                 key={log.id} 
                 onClick={() => setExpandedLogId(expandedLogId === log.id ? null : log.id)}
-                className="glass-card bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800/90 transition-colors cursor-pointer border-l-4 overflow-hidden shadow-sm" 
+                className={`glass-card bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800/90 transition-colors cursor-pointer border-l-4 overflow-hidden shadow-sm ${expandedLogId && expandedLogId !== log.id ? 'print:hidden' : ''}`} 
                 style={{borderLeftColor: log.urgency === 'Seek Care Today' ? '#dc3545' : log.urgency === 'See Doctor' ? '#ffc107' : '#28a745'}}
               >
                 <div className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -100,6 +100,15 @@ export function MedicalHistoryView() {
                           <span className="block text-[10px] uppercase tracking-wider font-bold text-gray-400 dark:text-slate-500 mb-1">Fever</span>
                           <span className="text-sm font-semibold text-gray-800 dark:text-slate-200">{log.surveyData.fever || 'Not specified'}</span>
                         </div>
+                     </div>
+                     <div className="mt-5 flex justify-end print:hidden">
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); window.print(); }}
+                          className="bg-trust-blue hover:opacity-90 text-white font-semibold py-2 px-5 rounded-full flex items-center gap-2 shadow-sm transition-all text-sm"
+                        >
+                          <FileDown size={16} />
+                          Download Report
+                        </button>
                      </div>
                   </div>
                 )}

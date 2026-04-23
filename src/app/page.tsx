@@ -2,6 +2,7 @@
 
 import { Sidebar } from '@/components/layout/Sidebar';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { Footer } from '@/components/layout/Footer';
 import { DashboardHome } from '@/components/features/DashboardHome';
 import { ProfileView } from '@/components/features/ProfileView';
 import { MedicalHistoryView } from '@/components/features/MedicalHistoryView';
@@ -23,7 +24,7 @@ export default function Home() {
             animate={{ width: 256, x: 0 }}
             exit={{ width: 0, x: -256 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="flex-shrink-0 h-full overflow-hidden border-r dark:border-slate-800"
+            className="flex-shrink-0 h-full overflow-hidden border-r dark:border-slate-800 print:hidden"
           >
             <div className="w-64 h-full">
                <Sidebar />
@@ -41,11 +42,11 @@ export default function Home() {
          {/* Decorative tech background elements */}
          <div className="absolute top-0 left-0 w-full h-[500px] bg-[radial-gradient(circle_at_50%_0%,rgba(32,86,179,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
          
-         <div className="relative z-10">
+         <div className="relative z-10 print:hidden">
             <DashboardHeader />
          </div>
          
-         <main className="flex-1 p-6 relative">
+         <main className="flex-1 p-6 relative print:p-0 print:bg-white">
             <AnimatePresence mode="wait">
               {currentView === 'analysis' ? (
                 <motion.div
@@ -80,6 +81,8 @@ export default function Home() {
               )}
             </AnimatePresence>
          </main>
+         
+         <Footer />
       </div>
     </div>
   );
