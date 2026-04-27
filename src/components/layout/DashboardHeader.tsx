@@ -2,7 +2,7 @@ import { Search, Menu, UserCircle, LogOut } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 
 export function DashboardHeader() {
-  const { user, toggleSidebar, setCurrentView, logoutUser } = useStore();
+  const { user, toggleSidebar, setCurrentView, logoutUser, setShowAuthModal, setShowLogoutConfirm } = useStore();
 
   return (
     <header className="flex items-center justify-between p-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-800/50 sticky top-0 z-50 transition-colors duration-300">
@@ -50,7 +50,7 @@ export function DashboardHeader() {
                      <UserCircle size={16} /> View Profile
                    </button>
                    <button 
-                     onClick={() => { logoutUser(); setCurrentView('dashboard'); }}
+                     onClick={() => { setShowLogoutConfirm(true); }}
                      className="w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 transition-colors border-t border-gray-100 dark:border-slate-700 mt-1 pt-3"
                    >
                      <LogOut size={16} /> Sign Out
@@ -58,7 +58,7 @@ export function DashboardHeader() {
                  </>
               ) : (
                  <button 
-                   onClick={() => setCurrentView('profile')}
+                   onClick={() => setShowAuthModal(true)}
                    className="w-full text-left px-4 py-2.5 text-sm text-trust-blue dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 font-semibold flex items-center gap-2 transition-colors"
                  >
                    <UserCircle size={16} /> Sign In

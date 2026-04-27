@@ -77,3 +77,19 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-montserrat);
 }
+
+@media print {
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white !important;
+    color: black !important;
+  }
+}

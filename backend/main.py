@@ -13,6 +13,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from ml.vision import load_model
 from api.routes import router as classify_router
+from api.auth_routes import router as auth_router
+from database import engine, Base
+
+Base.metadata.create_all(bind=engine)
 
 
 @asynccontextmanager
@@ -41,3 +45,4 @@ app.add_middleware(
 
 # ── Routes ──────────────────────────────────────────────────────────────
 app.include_router(classify_router)
+app.include_router(auth_router, prefix="/auth")

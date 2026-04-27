@@ -9,6 +9,8 @@ import { MedicalHistoryView } from '@/components/features/MedicalHistoryView';
 import { CameraView } from '@/components/features/CameraView';
 import { SurveyWizard } from '@/components/features/SurveyWizard';
 import { TriageDashboard } from '@/components/features/TriageDashboard';
+import { AuthModal } from '@/components/features/AuthModal';
+import { ConfirmLogoutModal } from '@/components/features/ConfirmLogoutModal';
 import { useStore } from '@/store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -16,7 +18,9 @@ export default function Home() {
   const { currentStep, currentView, isSidebarOpen } = useStore();
 
   return (
-    <div className="h-screen w-full flex overflow-hidden bg-gradient-to-b from-blue-50/50 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 transition-colors duration-500">
+    <div className="h-screen print:h-auto print:block w-full flex overflow-hidden print:overflow-visible bg-gradient-to-b from-blue-50/50 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 transition-colors duration-500">
+      <AuthModal />
+      <ConfirmLogoutModal />
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -46,7 +50,7 @@ export default function Home() {
         )}
       </AnimatePresence>
       
-      <div className="flex-1 flex flex-col relative z-10 w-full overflow-y-auto">
+      <div className="flex-1 flex flex-col relative z-10 w-full overflow-y-auto print:overflow-visible print:block">
          {/* Moving Stars Background (Only visible in dark mode via opacity transition) */}
          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
             <div className="absolute inset-0 w-[200vw] h-[200vh] stars-bg" />
@@ -59,7 +63,7 @@ export default function Home() {
             <DashboardHeader />
          </div>
          
-         <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 relative print:p-0 print:bg-white overflow-x-hidden">
+         <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6 relative print:p-0 print:bg-white overflow-x-hidden print:overflow-visible print:block">
             <AnimatePresence mode="wait">
               {currentView === 'analysis' ? (
                 <motion.div

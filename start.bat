@@ -18,4 +18,9 @@ echo All services have been launched in separate windows!
 echo - Web App:    http://localhost:3001
 echo - API Server: http://127.0.0.1:8000
 echo.
+
+:: Automatically open the default browser to the web app
+echo Opening browser...
+start http://localhost:3001
+
 pause

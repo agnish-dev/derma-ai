@@ -1,0 +1,170 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
+from database import get_db
+from schemas.models_db import User, VerificationCode
+from pydantic import BaseModel
+from auth import get_password_hash, verify_password, create_access_token
+from email_service import generate_otp, send_otp_email
+
+router = APIRouter()
+
+class AuthRequest(BaseModel):
+    email: str
+    password: str
+
+class SignupRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class VerifyRequest(BaseModel):
+    email: str
+    otp: str
+
+class ResendRequest(BaseModel):
+    email: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class VerifyResetOtpRequest(BaseModel):
+    email: str
+    otp: str
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    otp: str
+    new_password: str
+
+@router.post("/signup")
+def signup(req: SignupRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+        
+    hashed_password = get_password_hash(req.password)
+    new_user = User(name=req.name, email=req.email, hashed_password=hashed_password)
+    db.add(new_user)
+    db.commit()
+    
+    # Send OTP
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    code = VerificationCode(email=req.email, code=otp, expires_at=expires_at)
+    db.add(code)
+    db.commit()
+    
+    send_otp_email(req.email, otp)
+    return {"message": "User created. OTP sent to email."}
+
+@router.post("/signin")
+def signin(req: AuthRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user or not verify_password(req.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+    # Send OTP
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    
+    # clear old OTPs
+    db.query(VerificationCode).filter(VerificationCode.email == req.email).delete()
+    
+    code = VerificationCode(email=req.email, code=otp, expires_at=expires_at)
+    db.add(code)
+    db.commit()
+    
+    send_otp_email(req.email, otp)
+    return {"message": "OTP sent to email."}
+
+@router.post("/verify")
+def verify_otp(req: VerifyRequest, db: Session = Depends(get_db)):
+    record = db.query(VerificationCode).filter(VerificationCode.email == req.email, VerificationCode.code == req.otp).first()
+    
+    if not record or record.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+        
+    user = db.query(User).filter(User.email == req.email).first()
+    if user:
+        user.is_verified = True
+        db.commit()
+        
+    # Delete OTP record
+    db.delete(record)
+    db.commit()
+    
+    access_token = create_access_token(data={"sub": req.email})
+    return {"access_token": access_token, "token_type": "bearer", "email": req.email, "name": user.name if user else "User"}
+
+@router.post("/resend-otp")
+def resend_otp(req: ResendRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.is_verified:
+        raise HTTPException(status_code=400, detail="User already verified")
+        
+    # Send OTP
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    
+    # clear old OTPs
+    db.query(VerificationCode).filter(VerificationCode.email == req.email).delete()
+    
+    code = VerificationCode(email=req.email, code=otp, expires_at=expires_at)
+    db.add(code)
+    db.commit()
+    
+    send_otp_email(req.email, otp)
+    return {"message": "OTP resent to email."}
+
+@router.post("/forgot-password")
+def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with this email address")
+        
+    # Send OTP
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    
+    # clear old OTPs
+    db.query(VerificationCode).filter(VerificationCode.email == req.email).delete()
+    
+    code = VerificationCode(email=req.email, code=otp, expires_at=expires_at)
+    db.add(code)
+    db.commit()
+    
+    send_otp_email(req.email, otp)
+    return {"message": "If the email is registered, an OTP has been sent."}
+
+@router.post("/verify-reset-otp")
+def verify_reset_otp(req: VerifyResetOtpRequest, db: Session = Depends(get_db)):
+    record = db.query(VerificationCode).filter(VerificationCode.email == req.email, VerificationCode.code == req.otp).first()
+    
+    if not record or record.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+        
+    # We do NOT delete the OTP here, as it's needed for the actual reset step.
+    return {"message": "OTP is valid."}
+
+@router.post("/reset-password")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    record = db.query(VerificationCode).filter(VerificationCode.email == req.email, VerificationCode.code == req.otp).first()
+    
+    if not record or record.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+        
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    hashed_password = get_password_hash(req.new_password)
+    user.hashed_password = hashed_password
+    
+    # Delete OTP record
+    db.delete(record)
+    db.commit()
+    
+    return {"message": "Password has been successfully reset."}
