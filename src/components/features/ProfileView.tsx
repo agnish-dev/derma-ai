@@ -1,18 +1,8 @@
-import { useState } from 'react';
 import { useStore } from '@/store/useStore';
 import { UserCircle, Mail, Hash, LogOut, ArrowRight, ShieldCheck, Activity } from 'lucide-react';
 
 export function ProfileView() {
-  const { user, loginUser, logoutUser } = useStore();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name.trim() && email.trim()) {
-      loginUser(name, email);
-    }
-  };
+  const { user, setShowLogoutConfirm, setShowAuthModal } = useStore();
 
   if (user) {
     return (
@@ -48,7 +38,7 @@ export function ProfileView() {
 
                 <div className="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700 w-full flex justify-end">
                    <button 
-                     onClick={logoutUser}
+                     onClick={() => setShowLogoutConfirm(true)}
                      className="flex items-center gap-2 px-6 py-2.5 rounded-full text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 font-semibold transition-colors text-sm"
                    >
                      <LogOut size={16} />
@@ -74,38 +64,15 @@ export function ProfileView() {
           Please sign in to view your profile and sync your medical history across your devices.
         </p>
 
-        <form onSubmit={handleLogin} className="w-full flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 ml-1 transition-colors">Full Name</label>
-            <input 
-              type="text" 
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Alex Smith"
-              className="w-full bg-slate-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 dark:text-white dark:placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-trust-blue/50 transition-colors"
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 ml-1 transition-colors">Email Address</label>
-            <input 
-              type="email" 
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="alex@example.com"
-              className="w-full bg-slate-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 dark:text-white dark:placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-trust-blue/50 transition-colors"
-            />
-          </div>
-
+        <div className="w-full flex flex-col gap-4">
           <button 
-            type="submit"
+            onClick={() => setShowAuthModal(true)}
             className="mt-4 w-full bg-trust-blue hover:opacity-90 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-md"
           >
-            Access Profile
+            Sign In
             <ArrowRight size={18} />
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

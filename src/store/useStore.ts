@@ -35,7 +35,11 @@ export interface AppState {
   user: User | null;
   historyLogs: MedicalRecord[];
   isSidebarOpen: boolean;
+  showAuthModal: boolean;
+  showLogoutConfirm: boolean;
   setCurrentView: (view: ViewState) => void;
+  setShowAuthModal: (show: boolean) => void;
+  setShowLogoutConfirm: (show: boolean) => void;
   loginUser: (name: string, email: string) => void;
   logoutUser: () => void;
   toggleSidebar: () => void;
@@ -75,7 +79,11 @@ export const useStore = create<AppState>()(
       user: null,
       historyLogs: [],
       isSidebarOpen: true,
+      showAuthModal: false,
+      showLogoutConfirm: false,
       setCurrentView: (view) => set({ currentView: view }),
+      setShowAuthModal: (show) => set({ showAuthModal: show }),
+      setShowLogoutConfirm: (show) => set({ showLogoutConfirm: show }),
       loginUser: (name, email) => set({ 
         user: { name, email, patientId: `PT-${Math.floor(Math.random() * 900000) + 100000}` } 
       }),
