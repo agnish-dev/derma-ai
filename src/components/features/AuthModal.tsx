@@ -44,7 +44,7 @@ export function AuthModal() {
     setError('');
     try {
       const endpoint = (mode === 'reset-password' || mode === 'forgot-password') ? '/auth/forgot-password' : '/auth/resend-otp';
-      const res = await fetch(`http://127.0.0.1:8000${endpoint}`, {
+      const res = await fetch(`/api/proxy${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -66,7 +66,7 @@ export function AuthModal() {
 
     try {
       if (mode === 'signup') {
-        const res = await fetch('http://127.0.0.1:8000/auth/signup', {
+        const res = await fetch('/api/proxy/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password })
@@ -76,7 +76,7 @@ export function AuthModal() {
         setTimer(60);
         setMode('verify');
       } else if (mode === 'signin') {
-        const res = await fetch('http://127.0.0.1:8000/auth/signin', {
+        const res = await fetch('/api/proxy/auth/signin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -86,7 +86,7 @@ export function AuthModal() {
         setTimer(60);
         setMode('verify');
       } else if (mode === 'verify') {
-        const res = await fetch('http://127.0.0.1:8000/auth/verify', {
+        const res = await fetch('/api/proxy/auth/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, otp })
@@ -97,7 +97,7 @@ export function AuthModal() {
         loginUser(data.name || email.split('@')[0], email);
         setShowAuthModal(false);
       } else if (mode === 'forgot-password') {
-        const res = await fetch('http://127.0.0.1:8000/auth/forgot-password', {
+        const res = await fetch('/api/proxy/auth/forgot-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
@@ -108,7 +108,7 @@ export function AuthModal() {
         setOtpVerified(false);
         setMode('reset-password');
       } else if (mode === 'reset-password' && !otpVerified) {
-        const res = await fetch('http://127.0.0.1:8000/auth/verify-reset-otp', {
+        const res = await fetch('/api/proxy/auth/verify-reset-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, otp })
@@ -121,7 +121,7 @@ export function AuthModal() {
         if (password !== confirmPassword) {
           throw new Error("Passwords do not match");
         }
-        const res = await fetch('http://127.0.0.1:8000/auth/reset-password', {
+        const res = await fetch('/api/proxy/auth/reset-password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, otp, new_password: password })
