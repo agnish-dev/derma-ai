@@ -16,7 +16,7 @@ export function MedicalHistoryView() {
     setSendingId(log.id);
     try {
         const formattedDate = new Date(log.date).toLocaleDateString() + ' at ' + new Date(log.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const res = await fetch('http://127.0.0.1:8000/send-report', {
+        const res = await fetch('/api/proxy/send-report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -49,7 +49,7 @@ export function MedicalHistoryView() {
   useEffect(() => {
     if (user?.email) {
       setLoading(true);
-      fetch(`http://127.0.0.1:8000/reports/${user.email}`)
+      fetch(`/api/proxy/reports/${user.email}`)
         .then(res => res.json())
         .then(data => {
             if (Array.isArray(data)) {

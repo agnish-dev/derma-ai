@@ -15,7 +15,7 @@ export function TriageDashboard() {
   useEffect(() => {
     if (user && triageResult && conditionName && !savedRef.current) {
       savedRef.current = true;
-      fetch('http://127.0.0.1:8000/reports', {
+      fetch('/api/proxy/reports', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -36,7 +36,7 @@ export function TriageDashboard() {
     }
     setSending(true);
     try {
-        const res = await fetch('http://127.0.0.1:8000/send-report', {
+        const res = await fetch('/api/proxy/send-report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
