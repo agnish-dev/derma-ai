@@ -22,10 +22,14 @@ export function MedicalHistoryView() {
             body: JSON.stringify({
                 email: user.email,
                 triage_data: {
+                    patient_name: user.name || 'Guest Patient',
+                    patient_id: user.patientId || 'N/A',
+                    report_id: log.id,
+                    date: formattedDate,
                     predicted_class: log.conditionName,
                     danger_level: log.urgency,
                     survey: log.surveyData,
-                    date: formattedDate
+                    image_data: log.image_data
                 }
             })
         });
@@ -166,7 +170,13 @@ export function MedicalHistoryView() {
                           Send to Email
                         </button>
                         <button 
-                          onClick={(e) => { e.stopPropagation(); window.print(); }}
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            const originalTitle = document.title;
+                            document.title = `${user?.name || 'Guest_Patient'} - ${user?.patientId || 'NA'}`;
+                            window.print();
+                            setTimeout(() => { document.title = originalTitle; }, 1000);
+                          }}
                           className="bg-trust-blue hover:opacity-90 text-white font-semibold py-2 px-5 rounded-full flex items-center gap-2 shadow-sm transition-all text-sm"
                         >
                           <FileDown size={16} />

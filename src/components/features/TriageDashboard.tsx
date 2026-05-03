@@ -42,9 +42,14 @@ export function TriageDashboard() {
             body: JSON.stringify({
                 email: user.email,
                 triage_data: {
+                    patient_name: user.name || 'Guest Patient',
+                    patient_id: user.patientId || 'N/A',
+                    report_id: `REF-AI-${Math.floor(Math.random() * 90000) + 10000}-TX`,
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
                     predicted_class: conditionName,
                     danger_level: triageResult,
-                    survey: surveyData
+                    survey: surveyData,
+                    image_data: capturedImage
                 }
             })
         });
@@ -124,7 +129,12 @@ export function TriageDashboard() {
       >
         <div className="flex gap-4 w-full">
             <button 
-              onClick={() => window.print()}
+              onClick={() => {
+                const originalTitle = document.title;
+                document.title = `${user?.name || 'Guest_Patient'} - ${user?.patientId || 'NA'}`;
+                window.print();
+                setTimeout(() => { document.title = originalTitle; }, 1000);
+              }}
               className="flex-1 min-h-[48px] bg-trust-blue hover:opacity-90 text-white font-semibold rounded-full flex items-center justify-center gap-2 transition-all shadow-md"
             >
               <FileDown size={20} />
