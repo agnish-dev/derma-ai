@@ -7,7 +7,8 @@ Derma-Guide AI is an interactive, AI-powered progressive web application (PWA) d
 - **AI Skin Classification**: Utilizes a customized TensorFlow MobileNetV2 model to analyze user-uploaded or camera-captured images for a variety of localized skin conditions (e.g., ringworm, impetigo, cellulitis).
 - **Reactive Symptom Survey**: Pairs visual analysis with a dynamic clinical questionnaire (assessing pain, duration, spreading, and fever) to assign a realistic urgency modifier.
 - **Smart Triage Engine**: Returns an algorithmic urgency status—_Routine_, _See Doctor_, or _Seek Care Today_—empowering users to make safer health decisions.
-- **Persistent Medical History**: A fully isolated, local-first Zustand architectural store securely saves personal consultation history and survey logs across guest or authenticated sessions.
+- **User Authentication**: Secure signup and signin flow featuring email-based OTP (One-Time Password) verification and password recovery.
+- **Secure Medical History & Reporting**: Stores personal consultation history and survey logs in a robust SQLite database. Users can view past reports and instantly receive automated, professional PDF medical reports via email.
 - **Beautiful Dark Mode UI**: Built with Next.js, Tailwind v4, and Framer Motion, featuring glassmorphism elements, CSS-animated starry backdrops, and interactive accordion-style widgets.
 
 ## 🏗️ Project Structure
@@ -16,11 +17,17 @@ Derma-Guide AI is an interactive, AI-powered progressive web application (PWA) d
 derma-ai/
 ├── backend/                  # Python FastAPI Backend
 │   ├── api/
-│   │   └── routes.py         # API endpoint definitions
+│   │   ├── routes.py         # Image classification & reporting endpoints
+│   │   └── auth_routes.py    # Authentication & history endpoints
 │   ├── ml/
 │   │   └── vision.py         # TensorFlow model loading & inference
 │   ├── schemas/
-│   │   └── models.py         # Pydantic request/response models
+│   │   ├── models.py         # Pydantic models for ML
+│   │   └── models_db.py      # SQLAlchemy DB models (User, MedicalReport)
+│   ├── auth.py               # Password hashing & JWT utilities
+│   ├── database.py           # SQLite & SQLAlchemy DB setup
+│   ├── email_service.py      # Email notification and OTP service
+│   ├── pdf_generator.py      # PDF Medical report generation
 │   ├── main.py               # App entry point (FastAPI instance)
 │   ├── utils.py              # Triage heuristic logic
 │   ├── train.py              # Model training script
@@ -63,7 +70,7 @@ Simply double-click `start.bat` in the project root. It will launch both the bac
 
 ### Manual Start
 
-#### 1. Launch the Backend API
+#### 1. Configure and Launch the Backend API
 ```bash
 cd backend
 python -m venv venv
@@ -74,6 +81,16 @@ python -m venv venv
 source venv/bin/activate
 
 pip install -r requirements.txt
+```
+
+Create a `.env` file in the `backend/` directory with your SMTP email credentials to enable OTP verification and PDF emailing. (See `.env.example`)
+```env
+SMTP_EMAIL="your.email@gmail.com"
+SMTP_PASSWORD="your-16-digit-app-password"
+```
+
+Start the server:
+```bash
 uvicorn main:app --reload
 ```
 _The API will serve requests at `http://127.0.0.1:8000`._
