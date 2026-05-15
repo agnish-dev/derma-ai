@@ -196,7 +196,7 @@ export function AuthModal() {
                   />
                 </div>
               )}
-              {(mode === 'signin' || mode === 'signup' || mode === 'forgot-password') && (
+              {(mode === 'signin' || mode === 'signup' || mode === 'forgot-password' || (mode === 'reset-password' && otpVerified)) && (
                 <>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -207,7 +207,8 @@ export function AuthModal() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       autoComplete="off"
-                      className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-trust-blue text-gray-900 dark:text-white"
+                      disabled={mode === 'reset-password' && otpVerified}
+                      className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-trust-blue text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                 </>
@@ -253,7 +254,7 @@ export function AuthModal() {
                 </div>
               )}
 
-              {(mode === 'verify' || mode === 'reset-password') && (
+              {(mode === 'verify' || (mode === 'reset-password' && !otpVerified)) && (
                 <div className="relative">
                   <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                   <input
@@ -262,8 +263,7 @@ export function AuthModal() {
                     placeholder="6-Digit OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    disabled={mode === 'reset-password' && otpVerified}
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-trust-blue text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-trust-blue text-gray-900 dark:text-white"
                   />
                   {(!otpVerified || mode === 'verify') && (
                     <button
