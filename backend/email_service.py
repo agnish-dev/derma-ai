@@ -35,7 +35,7 @@ def send_otp_email(to_email: str, otp: str):
     """)
 
     try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as smtp:
             smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
             smtp.send_message(msg)
     except Exception as e:
@@ -68,6 +68,6 @@ def send_pdf_email(to_email: str, pdf_path: str):
         
     msg.add_attachment(pdf_data, maintype='application', subtype='pdf', filename='DermaGuide_Report.pdf')
     
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as smtp:
         smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
         smtp.send_message(msg)
