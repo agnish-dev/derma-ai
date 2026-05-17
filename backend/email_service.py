@@ -102,7 +102,7 @@ Please note that Derma Ai is NOT a final medical solution, diagnostic tool, or a
 
 Thank you for joining us!
 
-Best,
+Warm regards,
 Derma Ai Team"""
 
     html_body = f"""
@@ -125,7 +125,7 @@ Derma Ai Team"""
     
     <p>Thank you for joining us!</p>
     
-    <p>Best,<br>Derma Ai Team</p>
+    <p>Warm regards,<br>Derma Ai Team</p>
 </div>
 """
 
