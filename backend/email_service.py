@@ -86,3 +86,31 @@ Derma Guide Team"""
     
     _send_http_email(payload)
 
+def send_welcome_email(to_email: str, name: str):
+    if not SMTP_EMAIL:
+        print(f"Mock Welcome Email sent to {to_email}")
+        return
+        
+    body = f"""Hello {name},
+
+Welcome to Derma Ai! 
+
+Derma Ai is an intelligent assistant designed to help you analyze skin conditions using advanced AI technology. Our goal is to provide you with preliminary insights and help you monitor your skin health.
+
+IMPORTANT DISCLAIMER:
+Please note that Derma Ai is NOT a final medical solution, diagnostic tool, or a substitute for professional medical advice. The analysis provided by the application is for informational purposes only. You still need a doctor's advisory and a professional clinical diagnosis for any medical concerns or skin conditions. Always consult a healthcare professional before making any medical decisions.
+
+Thank you for joining us!
+
+Best,
+Derma Ai Team"""
+
+    payload = {
+        "to": to_email,
+        "subject": "Welcome to Derma Ai!",
+        "body": body
+    }
+    
+    _send_http_email(payload)
+
+

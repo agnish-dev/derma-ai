@@ -5,7 +5,7 @@ from database import get_db
 from schemas.models_db import User, VerificationCode
 from pydantic import BaseModel
 from auth import get_password_hash, verify_password, create_access_token
-from email_service import generate_otp, send_otp_email
+from email_service import generate_otp, send_otp_email, send_welcome_email
 
 router = APIRouter()
 
@@ -86,13 +86,19 @@ def verify_otp(req: VerifyRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Invalid or expired OTP")
         
     user = db.query(User).filter(User.email == req.email).first()
+    is_new_verification = False
     if user:
+        if not user.is_verified:
+            is_new_verification = True
         user.is_verified = True
         db.commit()
         
     # Delete OTP record
     db.delete(record)
     db.commit()
+    
+    if is_new_verification and user:
+        send_welcome_email(user.email, user.name)
     
     access_token = create_access_token(data={"sub": req.email})
     return {"access_token": access_token, "token_type": "bearer", "email": req.email, "name": user.name if user else "User"}
