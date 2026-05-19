@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Search, Menu, UserCircle, LogOut } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 
 export function DashboardHeader() {
   const { user, toggleSidebar, setCurrentView, logoutUser, setShowAuthModal, setShowLogoutConfirm } = useStore();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <header className="flex items-center justify-between p-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-800/50 sticky top-0 z-50 transition-colors duration-300">
@@ -24,12 +26,16 @@ export function DashboardHeader() {
         </h1>
       </div>
       {/* User Actions */}
-      <div className={`flex items-center gap-4 relative ${user ? 'group' : ''}`}>
+      <div className="flex items-center gap-4 relative">
         <button 
           type="button"
           className="flex items-center gap-3 cursor-pointer p-2 -mr-2 relative z-20 focus:outline-none appearance-none bg-transparent border-none text-left touch-manipulation"
           onClick={() => {
-            if (!user) setShowAuthModal(true);
+            if (!user) {
+               setShowAuthModal(true);
+            } else {
+               setIsDropdownOpen(!isDropdownOpen);
+            }
           }}
         >
           <span className="text-sm font-medium text-gray-700 dark:text-slate-200 hidden md:block">
@@ -44,18 +50,18 @@ export function DashboardHeader() {
           </div>
         </button>
 
-        {/* Hover Dropdown Menu */}
+        {/* Dropdown Menu */}
         {user && (
-          <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className={`absolute right-0 top-full pt-2 transition-all duration-200 z-50 ${isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
              <div className="w-48 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 py-2 flex flex-col overflow-hidden">
                <button 
-                 onClick={() => setCurrentView('profile')}
+                 onClick={() => { setCurrentView('profile'); setIsDropdownOpen(false); }}
                  className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
                >
                  <UserCircle size={16} /> View Profile
                </button>
                <button 
-                 onClick={() => { setShowLogoutConfirm(true); }}
+                 onClick={() => { setShowLogoutConfirm(true); setIsDropdownOpen(false); }}
                  className="w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 transition-colors border-t border-gray-100 dark:border-slate-700 mt-1 pt-3"
                >
                  <LogOut size={16} /> Sign Out
