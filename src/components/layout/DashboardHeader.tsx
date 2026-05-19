@@ -25,8 +25,8 @@ export function DashboardHeader() {
       </div>
       {/* User Actions */}
       <div className="flex items-center gap-4 relative group">
-        <div 
-          className="flex items-center gap-3 cursor-pointer py-1"
+        <button 
+          className="flex items-center gap-3 cursor-pointer py-1 focus:outline-none appearance-none bg-transparent border-none text-left"
           onClick={() => {
             if (!user) setShowAuthModal(true);
           }}
@@ -41,36 +41,27 @@ export function DashboardHeader() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
              )}
           </div>
-        </div>
+        </button>
 
         {/* Hover Dropdown Menu */}
-        <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-           <div className="w-48 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 py-2 flex flex-col overflow-hidden">
-              {user ? (
-                 <>
-                   <button 
-                     onClick={() => setCurrentView('profile')}
-                     className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
-                   >
-                     <UserCircle size={16} /> View Profile
-                   </button>
-                   <button 
-                     onClick={() => { setShowLogoutConfirm(true); }}
-                     className="w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 transition-colors border-t border-gray-100 dark:border-slate-700 mt-1 pt-3"
-                   >
-                     <LogOut size={16} /> Sign Out
-                   </button>
-                 </>
-              ) : (
-                 <button 
-                   onClick={() => setShowAuthModal(true)}
-                   className="w-full text-left px-4 py-2.5 text-sm text-trust-blue dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 font-semibold flex items-center gap-2 transition-colors"
-                 >
-                   <UserCircle size={16} /> Sign In
-                 </button>
-              )}
-           </div>
-        </div>
+        {user && (
+          <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+             <div className="w-48 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 py-2 flex flex-col overflow-hidden">
+               <button 
+                 onClick={() => setCurrentView('profile')}
+                 className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors"
+               >
+                 <UserCircle size={16} /> View Profile
+               </button>
+               <button 
+                 onClick={() => { setShowLogoutConfirm(true); }}
+                 className="w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2 transition-colors border-t border-gray-100 dark:border-slate-700 mt-1 pt-3"
+               >
+                 <LogOut size={16} /> Sign Out
+               </button>
+             </div>
+          </div>
+        )}
       </div>
     </header>
   );
