@@ -25,6 +25,11 @@ archive/
 .env.local
 .env.production
 
+# === Databases ===
+*.db
+*.sqlite
+*.sqlite3
+
 # === OS Files ===
 .DS_Store
 Thumbs.db
