@@ -14,6 +14,11 @@ const openSans = Open_Sans({
 
 import { Providers } from "@/components/ui/Providers";
 
+// Disable Next.js aggressive caching for the entire app to ensure fresh content on every refresh
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 
 export const metadata: Metadata = {
   title: "Derma Guide",
