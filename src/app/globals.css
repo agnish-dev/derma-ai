@@ -86,10 +86,14 @@ h1, h2, h3, h4, h5, h6 {
     transition: none !important;
   }
 
-  /* Do not force body to white, as it ruins the dark mode UI behind the print dialog. */
-  /* The printable report components already explicitly use bg-white text-black. */
+  @page {
+    margin: 0; /* Removes default browser margins so body background doesn't bleed into the PDF */
+  }
+
+  /* Do not force body to white, so the dashboard behind the print dialog stays dark */
   html, body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 }
+

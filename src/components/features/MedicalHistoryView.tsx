@@ -195,7 +195,7 @@ export function MedicalHistoryView() {
 
       {/* Printable Report UI (Hidden on Screen) */}
       {expandedLogId && (
-        <div className="hidden print:block w-full max-w-4xl mx-auto bg-white text-black p-8">
+        <div className="hidden print:block w-full min-h-screen bg-white text-black p-12">
            {(() => {
              const log = userLogs.find(l => l.id === expandedLogId);
              if (!log) return null;

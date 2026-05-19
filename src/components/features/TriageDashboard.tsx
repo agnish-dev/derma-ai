@@ -160,7 +160,7 @@ export function TriageDashboard() {
       </div>
 
       {/* Printable Report UI (Hidden on Screen) */}
-      <div className="hidden print:block w-full max-w-4xl mx-auto bg-white text-black p-8">
+      <div className="hidden print:block w-full min-h-screen bg-white text-black p-12">
         {/* Header */}
         <div className="flex justify-between items-end border-b-2 border-slate-200 pb-6 mb-8">
            <div>
